@@ -114,17 +114,7 @@ var idHandler = function(cb) {
                   <div class="card__front-right--container">
                     <h4 class="h-4 mb-xs">Evaluari:</h4>
                     <ul class="card__ratings">
-                      <div class="card__ratings--left">
-                        <li class="imdb">IMDb</li>
-                          <li class='rotten'>
-                          <svg class="rotten__icon"> <use xlink:href="img/Twemoji_1f345.svg#svg2"></use> </svg>
-                          <p>meter</p>
-                        </li>
-                        <li class="meta">Metascore</li>
-                      </div>
-                      <div class="card__ratings--right">
                         ${getRatings(imdbData.Ratings)}
-                      </div>
                     </ul>
                   </div>
 
@@ -180,11 +170,30 @@ function getRatings(rating){
     }
   }
 
-  result += `
-    <li class="imdb-rating">${rating[0].Value}</li>
-    <li class="rotten-rating">${rating[1].Value}</li>
-    <li class="meta-rating">${rating[2].Value}</li> `
+  // result += `
+  //   <li class="imdb-rating">${rating[0].Value}</li>
+  //   <li class="rotten-rating">${rating[1].Value}</li>
+  //   <li class="meta-rating">${rating[2].Value}</li> `
 
+  result += `                
+            <div class="card__ratings--top">
+              <li class='imdb'>IMDb</li>
+              <li class='imdb-rating bc-yellow'>${rating[0].Value}</li>
+            </div>
+
+            <div class="card__ratings--middle">
+              <li class='rotten'>
+                <svg class="rotten__icon"> <use xlink:href="img/Twemoji_1f345.svg#svg2"></use> </svg>
+                <p>meter</p>
+              </li>
+              <li class='rotten-rating bc-green'>${rating[1].Value}</li>
+            </div>
+
+            <div class="div card__ratings--down">
+              <li class='meta'>Metascore</li>
+              <li class='meta-rating bc-red'>${rating[2].Value}</li>
+            </div>
+`
   return result;
 }
 

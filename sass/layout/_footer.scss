@@ -1,8 +1,48 @@
 .footer {
 
-  background-color: $light-grey-2;
-  &__content {
-    color: #000;
-    padding: 2rem;
+  width: 80vw;
+  margin: 0 auto;
+
+  background-color: darken($yellow, 25%);
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+
+  height: 12rem;
+
+  &__left,
+  &__right {
+    display: inline-block;
+    padding: 1rem 2rem;
+    font-size: 1.4rem;
+    font-weight: 600;
   }
+
+  &__link {
+    &:link,
+    &:visited {
+      text-decoration: none;
+      color: $primary-color;
+      font-size: $normal-font-size;
+      
+      text-transform: uppercase;
+      display: inline-block;
+      transition: all .2s;
+
+      padding-left: .5rem;
+
+      font-weight: 700;
+    }
+
+    &:hover,
+    &:active {
+      color: $light-primary-color;
+      font-weight: 700;
+      transform: translateY(-3px)
+    }
+}
 }
