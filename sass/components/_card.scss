@@ -1,0 +1,169 @@
+.card {
+  display: flex;
+  align-items: stretch;
+
+  flex: 0 0 50rem;
+  height: 20rem;
+
+  color: $light-grey-2;
+
+  margin-bottom: 4rem;
+
+  &:nth-of-type(odd) {
+    margin-right: 4rem;
+  }
+
+  &__rotating-part {
+    position: relative;
+    display: flex;
+    perspective: 150rem;
+
+  }
+
+  &__img-container {
+    border-radius: 3px;
+    flex: 0 0 15rem;
+  }
+
+  &__img {
+    object-fit: cover;
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    box-shadow: 0 2rem 4rem rgba(#000, .2);
+  }
+
+  &__img-not-found {
+    width: 100%;
+    height: 100%;
+
+    font-size: 1.5rem;
+    font-weight: 100;
+
+    background-color: $dark-grey-2;
+
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    p {
+      display: inline-block;
+      width: 100%;
+      text-transform: uppercase;
+    }
+  }
+
+  // FRONT STYLE
+  &__front {
+    display: flex;
+    transition: all 1s;
+    background-image: linear-gradient(lighten($primary-color, 20%), $primary-color);
+    backface-visibility: hidden;
+
+    border-radius: 3px;
+    box-shadow: 0 2rem 4rem rgba(#000, .2);
+  }
+
+  // FRONT LEFT-STYLE
+  &__front-left, &__front-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 17.5rem;
+
+    font-size: 1.1rem;
+
+    padding-left: 1.5rem;
+
+  }
+
+  &__front-left{
+    border-right: 1px solid $light-primary-color;
+    padding-right: .5rem;
+    span {
+      font-size: 1rem;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+  }
+
+  // FRONT RIGHT STYLE
+  &__front-right {
+
+  }
+
+  // Rating style
+  &__ratings {
+    display: flex;
+
+    &--left, &--right {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      :not(:last-child) {
+        margin-bottom: .5rem;
+      }
+    }
+    &--left {
+      padding-right: 1rem;
+      border-right: 1px solid $light-primary-color;
+
+    }
+
+    &--right {
+      padding-left: 1rem;
+
+    }
+
+
+
+  }
+
+
+
+  // BACKFACE STYLING
+  &__back {
+    position: absolute;
+    top: 0; right: 0; left: 0; bottom: 0;
+
+    visibility: hidden;
+    transform: rotateX(180deg);
+    transition: all 1s;
+
+    background-image: linear-gradient($primary-color, lighten($primary-color, 20%));
+    backface-visibility: hidden;
+
+    display: flex;
+    flex-direction: column;
+
+    align-content: center;
+    justify-content: space-around;
+
+    border-radius: 3px;
+
+    box-shadow: 0 2rem 4rem rgba(#000, .2);
+
+    p {
+      font-size: 1.4rem;
+      padding: 0 2rem;
+    }
+
+  }
+
+  &__rotating-part:hover &__back{
+    transform: rotateX(0deg);
+    visibility: visible;
+  }
+
+  &__rotating-part:hover &__front{
+    transform: rotateX(-180deg);
+    visibility: hidden;
+  }
+
+  .btn {
+    align-self: center;
+  }
+}

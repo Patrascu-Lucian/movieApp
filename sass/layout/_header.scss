@@ -1,0 +1,27 @@
+.header {
+  margin: 3rem auto;
+  width: 80vw;
+
+
+  &__title {
+    text-align: center;
+  }
+
+  &__text {
+    color: $light-grey-1;
+    font-size: 1.4rem;
+  }
+
+  &__container {
+    background-color: darken($yellow, 25%);
+
+    border-radius: 3px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    :not(:last-child) {
+     margin-right: 1rem;
+    }
+  }
+}
