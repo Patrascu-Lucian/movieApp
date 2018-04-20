@@ -105,13 +105,12 @@
       justify-content: space-between;
 
       &:not(:last-child) {
-        padding-bottom: .5rem;
-        border-bottom: 1px solid $light-primary-color;
+        padding-bottom: .7rem;
+        border-bottom: 1px solid $dark-grey-1;
       }
 
       &:not(:first-child) {
-        padding-top: .5rem;
-        border-top: 1px solid $light-primary-color;
+        padding-top: .7rem;
       }
     }
 

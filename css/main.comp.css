@@ -169,11 +169,10 @@ body {
       display: flex;
       justify-content: space-between; }
       .card__ratings--top:not(:last-child), .card__ratings--middle:not(:last-child), .card__ratings--down:not(:last-child) {
-        padding-bottom: .5rem;
-        border-bottom: 1px solid #515e90; }
+        padding-bottom: .7rem;
+        border-bottom: 1px solid #999; }
       .card__ratings--top:not(:first-child), .card__ratings--middle:not(:first-child), .card__ratings--down:not(:first-child) {
-        padding-top: .5rem;
-        border-top: 1px solid #515e90; }
+        padding-top: .7rem; }
   .card__back {
     position: absolute;
     top: 0;
