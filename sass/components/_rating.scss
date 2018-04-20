@@ -20,7 +20,7 @@
     height: 2.5rem;
     display: block;
     z-index: 1;
-    transform: translateY(2px);
+    transform: translateY(-1px);
   }
   
   p {
@@ -31,7 +31,7 @@
     padding-left: 1.5rem;
     margin-left: -1.5rem;
     padding-right: .7rem;
-    border-radius: 1rem;
+    border-top-right-radius: 1rem;
     border: 1px solid #000;
   }
 }
