@@ -45,7 +45,7 @@ function searchMovies(callback){
   var xhr = new XMLHttpRequest();
 
   // function - open(TYPE, url/file, "boolean" async)
-  xhr.open('GET', 'http://www.omdbapi.com/?apikey=5df7d00a&s='+input, true);
+  xhr.open('GET', 'https://www.omdbapi.com/?apikey=5df7d00a&s='+input, true);
 
   xhr.onload = function(){
     if(this.status === 200){
@@ -83,7 +83,7 @@ var idHandler = function(cb) {
 
       xhr2[i] = new XMLHttpRequest();
 
-      url = 'http://www.omdbapi.com/?apikey=5df7d00a&i='+movieId[i];
+      url = 'https://www.omdbapi.com/?apikey=5df7d00a&i='+movieId[i];
 
       xhr2[i].open("GET", url, true);
 
@@ -275,14 +275,13 @@ var ratingHandler = function(i) {
 
 // // ================================== getMoreDetails() function ==================================
 function getMoreDetails(theId) {
-  console.log(theId);
   var theResult = '';
   
   var xhr3;
 
   xhr3 = new XMLHttpRequest();
 
-  xhr3.open("GET", 'http://www.omdbapi.com/?apikey=5df7d00a&i='+theId, true);
+  xhr3.open("GET", 'https://www.omdbapi.com/?apikey=5df7d00a&i='+theId, true);
 
   xhr3.onload = function(){
     if (xhr3.readyState === 4 && xhr3.status === 200){
@@ -337,14 +336,12 @@ function getMoreDetails(theId) {
                 </ul>
               </div>
             </div>
-            <a href="http://imdb.com/title/${theMovie.imdbID}" target="_blank" class="btn btn--yellow">Vezi pe IMDB</a>
+            <a href="https://imdb.com/title/${theMovie.imdbID}" target="_blank" class="btn btn--yellow">Vezi pe IMDB</a>
             </div>
           </div>
         </div>
       </div>
       `;
-
-      console.log(theMovie);
       lightBox.innerHTML = theResult;
     }
   }
