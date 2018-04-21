@@ -1,15 +1,13 @@
 {
-  "name": "natours",
+  "name": "movieapp",
   "version": "1.0.0",
   "description": "Movie site",
   "main": "index.js",
   "scripts": {
     "devserver": "live-server",
     "start": "npm-run-all --parallel devserver watch:sass",
-
     "compile:sass": "node-sass sass/main.scss css/main.comp.css",
     "watch:sass": "nodemon -e scss -x \"npm run compile:sass\"",
-
     "prefix:css": "postcss --use autoprefixer -b 'last 10 versions' css/main.comp.css -o css/main.prefix.css",
     "compress:css": "node-sass css/main.prefix.css css/main.css --output-main compressed",
     "build:css": "npm-run-all compile:sass prefix:css compress:css"
