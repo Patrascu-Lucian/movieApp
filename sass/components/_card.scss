@@ -1,7 +1,6 @@
 .card {
   display: flex;
 
-  flex: 0 0 50rem;
   height: 20rem;
 
   color: $light-grey-2;
@@ -10,8 +9,12 @@
 
   &:nth-of-type(odd) {
     margin-right: 4rem;
-  }
 
+    @media only screen and (max-width: $screen-l){
+      margin-right: 0;
+    }
+  }
+  
   &__rotating-part {
     position: relative;
     display: flex;
@@ -21,7 +24,12 @@
 
   &__img-container {
     border-radius: 3px;
-    flex: 0 0 15rem;
+    height: 20rem;
+    width: 15rem;
+
+    @media only screen and (max-width: $screen-xxs){
+      width: auto;
+    }
   }
 
   &__img {
@@ -64,13 +72,17 @@
     box-shadow: 0 2rem 4rem rgba(#000, .2);
   }
 
-  // FRONT LEFT-STYLE
+  // FRONT LEFT AND RIGHT STYLE
   &__front-left, &__front-right {
     display: flex;
     flex-direction: column;
     justify-content: center;
 
     width: 17.5rem;
+
+    @media only screen and (max-width: $screen-xxs){
+      width: auto;
+    }
 
     font-size: 1.1rem;
 
@@ -81,6 +93,7 @@
   &__front-left{
     border-right: 1px solid $light-primary-color;
     padding-right: .5rem;
+
     span {
       font-size: 1rem;
       display: inline-block;
@@ -113,13 +126,7 @@
       }
     }
 
-    &--middle {
-
-    }
-
   }
-
-
 
   // BACKFACE STYLING
   &__back {
@@ -146,6 +153,10 @@
     p {
       font-size: 1.4rem;
       padding: 0 2rem;
+
+      @media only screen and (max-width: $screen-xxs){
+        font-size: 1.1rem;
+      }
     }
 
   }
@@ -162,5 +173,95 @@
 
   .btn {
     align-self: center;
+  }
+}
+
+@media only screen and (hover: none){
+  .card{
+    height: auto;
+    width: 45rem;
+
+    @media only screen and (max-width: $screen-xxs){
+      width: auto;
+    }
+
+    &__img-container {
+      height: auto;
+      border-radius: 0;
+
+      @media only screen and (max-width: $screen-xxs){
+        width: auto;
+      }
+    }
+
+    &__rotating-part {
+      flex-direction: column;
+      width: 30rem;
+      justify-content: space-between;
+
+      @media only screen and (max-width: $screen-xxs){
+        width: auto;
+      }
+    }
+
+      // FRONT STYLE
+    &__front {
+      border-radius: 0;
+      flex: 1;
+      padding: 1rem 0;
+    }
+
+    // FRONT LEFT AND RIGHT STYLE
+    &__front-left, &__front-right {
+
+      width: 15rem;
+
+      font-size: 1.1rem;
+
+      padding-left: 1rem;
+      margin: 1rem 0;
+
+    }
+
+    // FRONT RIGHT STYLE
+    &__front-right {
+      padding: 0 1rem;
+    }
+
+    // BACKFACE STYLING
+    &__back {
+      flex: 1;
+      border-top: 1px solid $light-primary-color;
+      position: relative;
+
+      visibility: visible;
+      transform: rotateX(0);
+
+      border-radius: 0;
+
+      box-shadow: 0 2rem 4rem rgba(#000, .2);
+
+      p {
+        font-size: 1.1rem;
+        padding: 0 1rem;
+      }
+
+      .btn {
+        margin: 1rem 0;
+      }
+
+    }
+
+    &__rotating-part:hover &__back{
+      transform: rotateX(0deg);
+      visibility: visible;
+    }
+
+    &__rotating-part:hover &__front{
+      transform: rotateX(0deg);
+      visibility: visible;
+    }
+
+    border-radius: 3px;
   }
 }

@@ -2,6 +2,10 @@
   margin: 3rem auto;
   width: 80vw;
 
+  @media only screen and (max-width: $screen-m){
+    width: 100%;
+  }
+
   &__title {
     text-align: center;
   }
@@ -19,8 +23,5 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    :not(:last-child) {
-     margin-right: 1rem;
-    }
   }
 }

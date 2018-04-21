@@ -4,4 +4,11 @@
   justify-content: center;
 
   min-height: 50rem;
+
+  @media only screen and (max-width: $screen-l){
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
 }

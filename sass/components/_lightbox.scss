@@ -14,21 +14,24 @@
   align-items: center;
 
   &__content {
-    // width: 80vw;
-    // height: 80vh;
     background-color: $light-grey-2;
 
     display: flex;
+
+    margin: 0 1rem;
   }
 
   //LEFT SIDE
   &__left {
-
+    background-color: $dark-grey-1;
   }
 
   &__img-container {
     height: 100%;
     border: .5rem solid $light-grey-2;
+
+    display: flex;
+    align-items: center;
   }
 
   &__img{
