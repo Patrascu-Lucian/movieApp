@@ -346,6 +346,42 @@ body {
     opacity: .5;
     transform: translateY(-50%) translateX(25%); }
 
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  .lightbox__content {
+    background-color: #f7f7f7;
+    display: flex; }
+  .lightbox__img-container {
+    height: 100%;
+    border: 0.5rem solid #f7f7f7; }
+  .lightbox__img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover; }
+  .lightbox__right {
+    font-size: 1.3rem;
+    font-weight: 600;
+    padding: .5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-left: 1px solid #999; }
+  .lightbox__details {
+    display: flex; }
+    .lightbox__details--right {
+      padding-left: 1rem; }
+
 .footer {
   width: 80vw;
   margin: 0 auto;

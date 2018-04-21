@@ -1,7 +1,12 @@
-var button = document.getElementById('button');
-var gallery = document.getElementById('movie-gallery');
-var searchForm = document.getElementById('searchForm');
-var searchText = document.getElementById('searchText');
+// Constants
+const button = document.getElementById('button');
+const gallery = document.getElementById('movie-gallery');
+const searchForm = document.getElementById('searchForm');
+const searchText = document.getElementById('searchText');
+const lightBox = document.getElementById('lightbox');
+
+// Variables
+var movieData = new Array();
 var movieId = new Array();
 var imdbData = new Array();
 
@@ -13,8 +18,6 @@ var rottenRating;
 
 var imdb; 
 var rottenRating;
-
-// console.log(document.url);
 
 // Create event listener
 searchForm.addEventListener('submit', function(e){
@@ -32,6 +35,7 @@ searchForm.addEventListener('submit', function(e){
 
 });
 
+// ================================== searchMovies() function ==================================
 function searchMovies(callback){
   var input = searchText.value; 
   // Reset movie Id's on every search
@@ -69,8 +73,7 @@ function searchMovies(callback){
   
 } // END of searchMovies()
 
-
-
+// ================================== idHandler() function ==================================
 var idHandler = function(cb) {
   var output = '';
   
@@ -94,7 +97,7 @@ var idHandler = function(cb) {
           <div class="card">
 
             <div class="card__img-container">
-              ${getPoster(imdbData)}
+              ${getCardPoster(imdbData)}
             </div>
             <div class="card__rotating-part">
               <div class="card__front">
@@ -123,11 +126,12 @@ var idHandler = function(cb) {
 
               <div class="card__back">
                 <p>${imdbData.Plot}</p>
-                <button class="btn btn--yellow">Detalii++</button>
+                <button class="btn btn--yellow" onclick="getMoreDetails('${movieId[i]}')">Detalii++</button>
               </div>
             </div>
           </div>
           `;
+
           gallery.innerHTML = output;
 
           cb(i);
@@ -143,9 +147,10 @@ var idHandler = function(cb) {
   }
 
 
-}
+} // END OF idHandler()
 
-function getPoster(data) {
+// ================================== getCardPoster() function ==================================
+function getCardPoster(data) {
   if(data.Poster === 'N/A') {
     return `<div class="card__img-not-found">
       <p>${data.Title}</p>
@@ -155,6 +160,7 @@ function getPoster(data) {
   }
 }
 
+// ================================== getRatings() function ==================================
 function getRatings(rating){
   var result = '';
 
@@ -192,6 +198,7 @@ function getRatings(rating){
   return result;
 }
 
+// ================================== getType() function ==================================
 function getType(type) {
   if(type === 'movie'){
     type = 'Film';
@@ -204,6 +211,7 @@ function getType(type) {
   return type;
 }
 
+// ================================== ratingHandler() function ==================================
 var ratingHandler = function(i) {
 
   meta = document.querySelectorAll('.meta');
@@ -245,7 +253,7 @@ var ratingHandler = function(i) {
     } else {
       imdbRating[j].classList.add('bc-grey');
       
-    }
+   }
 
     var rottenParse = rottenRating[j].innerText.split('%')[0];
     if(parseInt(rottenParse) < 40) {
@@ -262,6 +270,102 @@ var ratingHandler = function(i) {
       
     }
 
-    
+  }
+}
+
+// // ================================== getMoreDetails() function ==================================
+function getMoreDetails(theId) {
+  console.log(theId);
+  var theResult = '';
+  
+  var xhr3;
+
+  xhr3 = new XMLHttpRequest();
+
+  xhr3.open("GET", 'http://www.omdbapi.com/?apikey=5df7d00a&i='+theId, true);
+
+  xhr3.onload = function(){
+    if (xhr3.readyState === 4 && xhr3.status === 200){
+  
+      var theMovie = JSON.parse(xhr3.responseText);
+
+      theResult = `
+      <div class="lightbox">
+        <div class="lightbox__content">
+          <div class="lightbox__left">
+            <div class="lightbox__img-container">
+            ${getLightBoxPoster(theMovie)}
+            </div>
+          </div>
+          <div class="lightbox__right">
+  
+            <div class="lightbox__details">
+              <div class="lightbox__details--left">
+                <ul>
+                  <li>Titlu:</li>
+                  <li>An:</li>
+                  <li>Lansat:</li>
+                  <li>Durata:</li>
+                  <li>Premii:</li>
+                  <li>Bilete:</li>
+                  <li>Tara:</li>
+                  <li>DVD:</li>
+                  <li>Director:</li>
+                  <li>Limba:</li>
+                  <li>Productie:</li>
+                  <li>Scriitor:</li>
+                  <li>Vot IMDb:</li>
+                  <li>Actori:</li>
+                </ul>
+              </div>
+              <div class="lightbox__details--right">
+                <ul>
+                  <li>${theMovie.Title || 'indisponibil'}</li>
+                  <li>${theMovie.Year || 'indisponibil'}</li>
+                  <li>${theMovie.Released || 'indisponibil'}</li>
+                  <li>${theMovie.Runtime || 'indisponibil'}</li>
+                  <li>${theMovie.Awards || 'indisponibil'}</li>
+                  <li>${theMovie.BoxOffice || 'indisponibil'}</li>
+                  <li>${theMovie.Country || 'indisponibil'}</li>
+                  <li>${theMovie.DVD || 'indisponibil'}</li>
+                  <li>${theMovie.Director || 'indisponibil'}</li>
+                  <li>${theMovie.Language || 'indisponibil'}</li>
+                  <li>${theMovie.Production || 'indisponibil'}</li>
+                  <li>${theMovie.Writer.split(',')[0] || 'indisponibil'}</li>
+                  <li>${theMovie.imdbVotes || 'indisponibil'}</li>
+                  <li>${theMovie.Actors || 'indisponibil'}</li>
+                </ul>
+              </div>
+            </div>
+            <a href="http://imdb.com/title/${theMovie.imdbID}" target="_blank" class="btn btn--yellow">Vezi pe IMDB</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      `;
+
+      console.log(theMovie);
+      lightBox.innerHTML = theResult;
+    }
+  }
+
+  xhr3.onerror = function(){
+    lightBox.InnerHTML = 'Request error...';
+  }
+
+  xhr3.send();
+}
+      
+// ================================== lightbox event listener ==================================
+lightBox.addEventListener('click', function() {
+  this.removeChild(this.firstElementChild);
+});
+
+// ================================== getLightBoxPoster() function ==================================
+function getLightBoxPoster(data) {
+  if(data.Poster === 'N/A') {
+    return '';
+  } else {
+    return `<img class="lightbox__img" src="${data.Poster}" alt="${data.Title} poster">`;
   }
 }
