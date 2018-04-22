@@ -7,6 +7,10 @@
 
   margin-bottom: 4rem;
 
+  @media only screen and (max-width: $screen-xxs){
+    width: 100%;
+  }
+
   &:nth-of-type(odd) {
     margin-right: 4rem;
 
@@ -20,6 +24,10 @@
     display: flex;
     perspective: 150rem;
 
+    @media only screen and (max-width: $screen-xxs){
+      width: 80%;
+    }
+
   }
 
   &__img-container {
@@ -28,7 +36,7 @@
     width: 15rem;
 
     @media only screen and (max-width: $screen-xxs){
-      width: auto;
+      width: 20%;
     }
   }
 
@@ -70,6 +78,10 @@
 
     border-radius: 3px;
     box-shadow: 0 2rem 4rem rgba(#000, .2);
+
+    @media only screen and (max-width: $screen-xxs){
+      width: 100%;
+    }
   }
 
   // FRONT LEFT AND RIGHT STYLE
@@ -81,7 +93,7 @@
     width: 17.5rem;
 
     @media only screen and (max-width: $screen-xxs){
-      width: auto;
+      width: 50%;
     }
 
     font-size: 1.1rem;
@@ -150,6 +162,10 @@
 
     box-shadow: 0 2rem 4rem rgba(#000, .2);
 
+    @media only screen and (max-width: $screen-xxs){
+      width: 100%;
+    }
+
     p {
       font-size: 1.4rem;
       padding: 0 2rem;
@@ -179,28 +195,23 @@
 @media only screen and (hover: none){
   .card{
     height: auto;
-    width: 45rem;
-
-    @media only screen and (max-width: $screen-xxs){
-      width: auto;
-    }
 
     &__img-container {
       height: auto;
       border-radius: 0;
 
       @media only screen and (max-width: $screen-xxs){
-        width: auto;
+        width: 25%;
       }
     }
 
     &__rotating-part {
       flex-direction: column;
-      width: 30rem;
+      width: 35rem;
       justify-content: space-between;
 
       @media only screen and (max-width: $screen-xxs){
-        width: auto;
+        width: 75%;
       }
     }
 
@@ -208,7 +219,7 @@
     &__front {
       border-radius: 0;
       flex: 1;
-      padding: 1rem 0;
+      padding: 0;
     }
 
     // FRONT LEFT AND RIGHT STYLE
@@ -218,14 +229,22 @@
 
       font-size: 1.1rem;
 
-      padding-left: 1rem;
-      margin: 1rem 0;
+      padding: 0;
+      margin: 1rem auto;
+
+      &--container{
+        margin: 1rem 0;
+      }
 
     }
 
     // FRONT RIGHT STYLE
     &__front-right {
-      padding: 0 1rem;
+      padding: 0;
+
+      &--container {
+
+      }
     }
 
     // BACKFACE STYLING

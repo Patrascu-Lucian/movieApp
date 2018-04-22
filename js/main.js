@@ -38,6 +38,7 @@ searchForm.addEventListener('submit', function(e){
 // ================================== searchMovies() function ==================================
 function searchMovies(callback){
   var input = searchText.value; 
+  
   // Reset movie Id's on every search
   movieId = [];
 

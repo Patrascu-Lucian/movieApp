@@ -6,9 +6,17 @@ body {
     color: $dark-grey-3;
 }
 .h-1 {
-  font-size: 3rem;
+  font-size: 4rem;
   text-transform: uppercase;
   color: $light-grey-1;
+  font-weight: 100; 
+  letter-spacing: .7rem;
+
+  @media only screen and (max-width: $screen-s){
+    font-weight: 400;
+    font-size: 3rem;
+    letter-spacing: .5rem;
+  }
 }
 .h-3 {
   font-size: 1.3rem;
