@@ -40,10 +40,10 @@ function searchMovies(callback){
   var regex1 = /\s\s+/g;
   var regex2 = /[^A-Za-z0-9\s]/g;
 
-  var input = searchText.value
-              .replace(regex1, ' ')
-              .replace(regex2, '')
-              .trim();
+  var input = searchText.value = searchText.value
+                                  .replace(regex1, ' ')
+                                  .replace(regex2, '')
+                                  .trim();
   console.log(input);
   
   // Reset movie Id's on every search
