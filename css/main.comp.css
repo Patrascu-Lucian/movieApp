@@ -6,6 +6,12 @@
     transform: scaleX(1.4) scaleY(1.6);
     opacity: 0; } }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
 *,
 *::after,
 *::before {
@@ -475,7 +481,10 @@ body {
   justify-content: center;
   align-items: center; }
   .lightbox__content {
+    position: relative;
     background-color: #f7f7f7;
+    animation: fadeIn .3s;
+    transition: all .2s;
     display: flex;
     margin: 0 1rem; }
     @media only screen and (max-width: 50em) {
@@ -486,6 +495,20 @@ body {
         color: #f7f7f7;
         background-color: #333;
         position: relative; } }
+  .lightbox__close-btn {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    line-height: 1;
+    font-size: 2.5rem;
+    top: 0;
+    right: 0; }
+    .lightbox__close-btn:hover {
+      color: #515e90;
+      cursor: pointer; }
   .lightbox__left {
     background-color: #999; }
     @media only screen and (max-width: 50em) {

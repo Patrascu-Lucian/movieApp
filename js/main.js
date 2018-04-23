@@ -299,6 +299,7 @@ function getMoreDetails(theId) {
       theResult = `
       <div class="lightbox">
         <div class="lightbox__content">
+        <div class="lightbox__close-btn">&times;</div>
           <div class="lightbox__left">
             <div class="lightbox__img-container">
             ${getLightBoxPoster(theMovie)}
@@ -362,8 +363,18 @@ function getMoreDetails(theId) {
 }
       
 // ================================== lightbox event listener ==================================
-lightBox.addEventListener('click', function() {
-  this.removeChild(this.firstElementChild);
+lightBox.addEventListener('click', function(e) {
+  var self = this;
+  var closeBtn = self.querySelector('.lightbox__close-btn');
+
+  if (e.target === self.firstElementChild || e.target === closeBtn) {
+
+    self.firstElementChild.firstElementChild.style.opacity = "0";
+    setTimeout(function(){
+      self.removeChild(self.firstElementChild);
+    }, 200);
+
+  }
 });
 
 // ================================== getLightBoxPoster() function ==================================

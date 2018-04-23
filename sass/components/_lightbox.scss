@@ -14,7 +14,10 @@
   align-items: center;
 
   &__content {
+    position: relative;
     background-color: $light-grey-2;
+    animation: fadeIn .3s;
+    transition: all .2s;
 
     display: flex;
 
@@ -31,7 +34,24 @@
 
       position: relative;
 
+    }
+  }
 
+  &__close-btn {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    line-height: 1;
+    font-size: 2.5rem;
+    top: 0;
+    right: 0;
+
+    &:hover {
+      color: $light-primary-color;
+      cursor: pointer;
     }
   }
 
@@ -110,6 +130,5 @@
     }
 
   }
-
 
 }
