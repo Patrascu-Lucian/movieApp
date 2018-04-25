@@ -299,53 +299,57 @@ function getMoreDetails(theId) {
       theResult = `
       <div class="lightbox">
         <div class="lightbox__content">
-        <div class="lightbox__close-btn">&times;</div>
-          <div class="lightbox__left">
-            <div class="lightbox__img-container">
-            ${getLightBoxPoster(theMovie)}
-            </div>
-          </div>
-          <div class="lightbox__right">
-  
-            <div class="lightbox__details">
-              <div class="lightbox__details--left">
-                <ul>
-                  <li>Titlu:</li>
-                  <li>An:</li>
-                  <li>Lansat:</li>
-                  <li>Durata:</li>
-                  <li>Premii:</li>
-                  <li>Bilete:</li>
-                  <li>Tara:</li>
-                  <li>DVD:</li>
-                  <li>Director:</li>
-                  <li>Limba:</li>
-                  <li>Productie:</li>
-                  <li>Scriitor:</li>
-                  <li>Vot IMDb:</li>
-                  <li>Actori:</li>
-                </ul>
-              </div>
-              <div class="lightbox__details--right">
-                <ul>
-                  <li>${theMovie.Title || 'indisponibil'}</li>
-                  <li>${theMovie.Year || 'indisponibil'}</li>
-                  <li>${theMovie.Released || 'indisponibil'}</li>
-                  <li>${theMovie.Runtime || 'indisponibil'}</li>
-                  <li>${theMovie.Awards || 'indisponibil'}</li>
-                  <li>${theMovie.BoxOffice || 'indisponibil'}</li>
-                  <li>${theMovie.Country || 'indisponibil'}</li>
-                  <li>${theMovie.DVD || 'indisponibil'}</li>
-                  <li>${theMovie.Director || 'indisponibil'}</li>
-                  <li>${theMovie.Language || 'indisponibil'}</li>
-                  <li>${theMovie.Production || 'indisponibil'}</li>
-                  <li>${theMovie.Writer.split(',')[0] || 'indisponibil'}</li>
-                  <li>${theMovie.imdbVotes || 'indisponibil'}</li>
-                  <li>${theMovie.Actors || 'indisponibil'}</li>
-                </ul>
+          <div class="lightbox__close-btn">&times;</div>
+            <div class="lightbox__left">
+              <div class="lightbox__img-container">
+                ${getLightBoxPoster(theMovie)}
               </div>
             </div>
-            <a href="https://imdb.com/title/${theMovie.imdbID}" target="_blank" class="btn btn--yellow">Vezi pe IMDB</a>
+            <div class="lightbox__right">
+    
+              <div class="lightbox__details">
+
+                <div class="lightbox__details--left">
+                  <ul>
+                    <li>Titlu:</li>
+                    <li>An:</li>
+                    <li>Lansat:</li>
+                    <li>Durata:</li>
+                    <li>Bilete:</li>
+                    <li>Tara:</li>
+                    <li>DVD:</li>
+                    <li>Director:</li>
+                    <li>Limba:</li>
+                    <li>Productie:</li>
+                    <li>Scriitor:</li>
+                    <li>Vot IMDb:</li>
+                    <li>Premii:</li>
+                    <li>Actori:</li>
+                  </ul>
+                </div>
+
+                <div class="lightbox__details--right">
+                  <ul>
+                    <li>${theMovie.Title || 'indisponibil'}</li>
+                    <li>${theMovie.Year || 'indisponibil'}</li>
+                    <li>${theMovie.Released || 'indisponibil'}</li>
+                    <li>${theMovie.Runtime || 'indisponibil'}</li>
+                    <li>${theMovie.BoxOffice || 'indisponibil'}</li>
+                    <li>${theMovie.Country || 'indisponibil'}</li>
+                    <li>${theMovie.DVD || 'indisponibil'}</li>
+                    <li>${theMovie.Director || 'indisponibil'}</li>
+                    <li>${theMovie.Language || 'indisponibil'}</li>
+                    <li>${theMovie.Production || 'indisponibil'}</li>
+                    <li>${theMovie.Writer.split(',')[0] || 'indisponibil'}</li>
+                    <li>${theMovie.imdbVotes || 'indisponibil'}</li>
+                    <li>${theMovie.Awards || 'indisponibil'}</li>
+                    <li>${theMovie.Actors || 'indisponibil'}</li>
+                  </ul>
+                </div>
+
+              </div>
+
+              <a href="https://imdb.com/title/${theMovie.imdbID}" target="_blank" class="btn btn--yellow">Vezi pe IMDB</a>
             </div>
           </div>
         </div>
