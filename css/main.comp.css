@@ -581,6 +581,48 @@ body {
     .lightbox__details--right {
       padding-left: 1rem; }
 
+.spinner {
+  position: absolute;
+  background-color: transparent;
+  position: relative;
+  display: block;
+  width: 7rem;
+  height: 7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  border-bottom: 0.5rem solid #f7f7f7;
+  border-right: 0.5rem solid #f7f7f7;
+  animation: rotate 0.75s infinite cubic-bezier(1, 1, 1, 1); }
+  .spinner::before {
+    content: "";
+    position: absolute;
+    background-color: transparent;
+    display: block;
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    border-right: 0.5rem solid #f7f7f7;
+    border-bottom: 0.5rem solid #f7f7f7;
+    animation: rotate 1s infinite cubic-bezier(1, 1, 1, 1); }
+  .spinner::after {
+    content: "";
+    position: absolute;
+    background-color: transparent;
+    display: block;
+    width: 10rem;
+    height: 10rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    border-top: 0.5rem solid #f7f7f7;
+    animation: rotate 0.5s infinite cubic-bezier(1, 1, 1, 1); }
+
 .footer {
   width: 95vw;
   margin: 0 auto;

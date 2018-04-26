@@ -5,23 +5,19 @@ const searchForm = document.getElementById('searchForm');
 const searchText = document.getElementById('searchText');
 const lightBox = document.getElementById('lightbox');
 const errorParagraph = document.getElementById('error-paragraph');
-
-// Variables
-var movieData = new Array();
-var movieId = new Array();
-var imdbData = new Array();
+const spinner = '<div class="spinner"></div>';
 
 // Create event listener
 searchForm.addEventListener('submit', function(e){
   e.preventDefault();
 
-  searchMovies(function(){
+    
+  // Reset gallery on every search
+  gallery.innerHTML = '';
 
-   idHandler(function(i){
+  searchMovies(function(data){
 
-      ratingHandler(i);
-
-   }); 
+   idHandler(data, ratingHandler);
    
   });
 
@@ -39,11 +35,8 @@ function searchMovies(callback){
                                   .trim();
 
   if(input.length < 2) {
-    showError('Please insert at least 2 letters', 'form__warning');
+    showError('Trebuie sa introduci cel putin doua litere/cifre', 'form__warning');
   } else {
-  
-    // Reset movie Id's on every search
-    movieId = [];
 
     // Create XHR Object
     var xhr = new XMLHttpRequest();
@@ -51,29 +44,31 @@ function searchMovies(callback){
     // function - open(TYPE, url/file, "boolean" async)
     xhr.open('GET', 'https://www.omdbapi.com/?apikey=5df7d00a&s='+input, true);
 
+    if(xhr.readyState < 4) {
+      gallery.insertAdjacentHTML('beforeEnd', spinner);
+    }
+
     xhr.onload = function(){
       if(this.status === 200){
+
         var data = JSON.parse(xhr.responseText);
         if(data.Response === 'True') {
-        
-          for (var i = 0; i < data.Search.length; i++) {
-            
-            movieId.push(data.Search[i].imdbID);
+          for(var i = 0; i < data.Search.length; i++) {
+            callback(data.Search[i].imdbID);
           }
 
-          callback();
-
       } else {
-        showError('Please try a different search approach', 'form__warning');
+        gallery.querySelector('.spinner').remove();
+        showError('Nume invalid!', 'form__warning');
       }
 
       } else if(this.status === 404) {
-        showError('ERROR 404: NOT FOUND!', 'form__error');
+        showError('EROARE 404: NU S-AU GASIT FISIERELE!', 'form__error');
       }
     }
 
     xhr.onerror = function(){
-      showError('Request error', 'form__error');
+      showError('Eroare cerere...', 'form__error');
     }
 
     // Sends request
@@ -96,76 +91,71 @@ function showError(message, className) {
 }
 
 // ================================== idHandler() function ==================================
-var idHandler = function(cb) {
-  gallery.innerHTML = '';
+var idHandler = function(imdbData, callback) {
   var output = '';
-  
-  var xhr2 = [], i;
-  for(i = 0; i < movieId.length; i++){ //for loop
-    (function(i){
 
-      xhr2[i] = new XMLHttpRequest();
+  var xhr = new XMLHttpRequest();
 
-      url = 'https://www.omdbapi.com/?apikey=5df7d00a&i='+movieId[i];
+  url = 'https://www.omdbapi.com/?apikey=5df7d00a&i='+imdbData;
 
-      xhr2[i].open("GET", url, true);
+  xhr.open("GET", url, true);
 
-      xhr2[i].onreadystatechange = function(){
+  xhr.onload = function(){
 
-        if (xhr2[i].readyState === 4 && xhr2[i].status === 200){
+    if (xhr.status === 200){
 
-          imdbData = JSON.parse(xhr2[i].responseText);
+    imdbData = JSON.parse(xhr.responseText);
 
-          output = `
-          <div class="card">
+    output = `
+    <div class="card">
 
-            <div class="card__img-container">
-              ${getCardPoster(imdbData)}
-            </div>
-            <div class="card__rotating-part">
-              <div class="card__front">
+      <div class="card__img-container">
+        ${getCardPoster(imdbData)}
+      </div>
+      <div class="card__rotating-part">
+        <div class="card__front">
 
-                <div class="card__front-left">
-                  <div class="card__front-left--container">
-                    <h3 class="h-3">${imdbData.Title}</h4><span>(${imdbData.Year}) - ${getType(imdbData.Type)}</span>
+          <div class="card__front-left">
+            <div class="card__front-left--container">
+              <h3 class="h-3">${imdbData.Title}</h4><span>(${imdbData.Year}) - ${getType(imdbData.Type)}</span>
 
-                    <h4 class="h-4">Gen:</h4>
-                    <ul class="card__ratings">
-                      ${imdbData.Genre}
-                    </ul>
-                  </div>
-                </div>
-
-                <div class="card__front-right">
-                  <div class="card__front-right--container">
-                    <h4 class="h-4 mb-xs">Evaluari:</h4>
-                    <ul class="card__ratings">
-                        ${getRatings(imdbData.Ratings)}
-                    </ul>
-                  </div>
-
-                </div>
-              </div>
-
-              <div class="card__back">
-                <p>${imdbData.Plot}</p>
-                <button class="btn btn--yellow" onclick="getMoreDetails('${movieId[i]}')">Detalii++</button>
-              </div>
+              <h4 class="h-4">Gen:</h4>
+              <ul class="card__ratings">
+                ${imdbData.Genre}
+              </ul>
             </div>
           </div>
-          `;
 
-          cb(i);
-          gallery.insertAdjacentHTML('beforeEnd', output);
-        }
-      };
-      xhr2[i].send();
-      
-    })(i);
+          <div class="card__front-right">
+            <div class="card__front-right--container">
+              <h4 class="h-4 mb-xs">Evaluari:</h4>
+              <ul class="card__ratings">
+                  ${getRatings(imdbData.Ratings)}
+              </ul>
+            </div>
 
-  }
+          </div>
+        </div>
 
+        <div class="card__back">
+          <p>${imdbData.Plot}</p>
+          <button class="btn btn--yellow" onclick="getMoreDetails('${imdbData}')">Detalii++</button>
+        </div>
+      </div>
+    </div>
+    `;
 
+    if(gallery.querySelector('.spinner')) {
+      gallery.querySelector('.spinner').remove();
+    }
+
+    callback(imdbData);
+    gallery.insertAdjacentHTML('beforeEnd', output);
+
+    }
+  }; 
+
+  xhr.send();
 } // END OF idHandler()
 
 // ================================== getCardPoster() function ==================================
@@ -231,7 +221,7 @@ function getType(type) {
 }
 
 // ================================== ratingHandler() function ==================================
-var ratingHandler = function(i) {
+var ratingHandler = function() {
 
   const meta = document.querySelectorAll('.meta');
   const metaRating = document.querySelectorAll('.meta-rating');
@@ -371,7 +361,7 @@ function getMoreDetails(theId) {
   }
 
   xhr3.onerror = function(){
-    showError('Request error', 'form__error');
+    showError('Eroare cerere....', 'form__error');
   }
 
   xhr3.send();
