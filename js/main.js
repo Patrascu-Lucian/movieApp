@@ -4,20 +4,12 @@ const gallery = document.getElementById('movie-gallery');
 const searchForm = document.getElementById('searchForm');
 const searchText = document.getElementById('searchText');
 const lightBox = document.getElementById('lightbox');
+const errorParagraph = document.getElementById('error-paragraph');
 
 // Variables
 var movieData = new Array();
 var movieId = new Array();
 var imdbData = new Array();
-
-var meta;
-var metaRating;
-   
-var rotten;
-var rottenRating;
-
-var imdb; 
-var rottenRating;
 
 // Create event listener
 searchForm.addEventListener('submit', function(e){
@@ -39,50 +31,73 @@ searchForm.addEventListener('submit', function(e){
 function searchMovies(callback){
   var regex1 = /\s\s+/g;
   var regex2 = /[^A-Za-z0-9\s]/g;
+  var regex3 = /[A-Za-z0-9]{2,9}/;
 
   var input = searchText.value = searchText.value
                                   .replace(regex1, ' ')
                                   .replace(regex2, '')
                                   .trim();
-  console.log(input);
+
+  if(input.length < 2) {
+    showError('Please insert at least 2 letters', 'form__warning');
+  } else {
   
-  // Reset movie Id's on every search
-  movieId = [];
+    // Reset movie Id's on every search
+    movieId = [];
 
-  // Create XHR Object
-  var xhr = new XMLHttpRequest();
+    // Create XHR Object
+    var xhr = new XMLHttpRequest();
 
-  // function - open(TYPE, url/file, "boolean" async)
-  xhr.open('GET', 'https://www.omdbapi.com/?apikey=5df7d00a&s='+input, true);
+    // function - open(TYPE, url/file, "boolean" async)
+    xhr.open('GET', 'https://www.omdbapi.com/?apikey=5df7d00a&s='+input, true);
 
-  xhr.onload = function(){
-    if(this.status === 200){
-      var data = JSON.parse(xhr.responseText);
-      
-      for (var i = 0; i < data.Search.length; i++) {
+    xhr.onload = function(){
+      if(this.status === 200){
+        var data = JSON.parse(xhr.responseText);
+        if(data.Response === 'True') {
         
-        movieId.push(data.Search[i].imdbID);
+          for (var i = 0; i < data.Search.length; i++) {
+            
+            movieId.push(data.Search[i].imdbID);
+          }
+
+          callback();
+
+      } else {
+        showError('Please try a different search approach', 'form__warning');
       }
 
-      callback();
-
-    } else if(this.status === 404) {
-      gallery.innerHTML = 'NOT FOUND!!!';
+      } else if(this.status === 404) {
+        showError('ERROR 404: NOT FOUND!', 'form__error');
+      }
     }
+
+    xhr.onerror = function(){
+      showError('Request error', 'form__error');
+    }
+
+    // Sends request
+
+    xhr.send();
   }
-
-  xhr.onerror = function(){
-    gallery.InnerHTML = 'Request error...';
-  }
-
-  // Sends request
-
-  xhr.send();
   
 } // END of searchMovies()
 
+// ================= Show error fucntion ================
+
+function showError(message, className) {
+  errorParagraph.className = className;
+  errorParagraph.textContent = message;
+
+  setTimeout(function(){
+    errorParagraph.className = '';
+    errorParagraph.textContent = '';
+  }, 3000);
+}
+
 // ================================== idHandler() function ==================================
 var idHandler = function(cb) {
+  gallery.innerHTML = '';
   var output = '';
   
   var xhr2 = [], i;
@@ -101,7 +116,7 @@ var idHandler = function(cb) {
 
           imdbData = JSON.parse(xhr2[i].responseText);
 
-          output += `
+          output = `
           <div class="card">
 
             <div class="card__img-container">
@@ -140,15 +155,11 @@ var idHandler = function(cb) {
           </div>
           `;
 
-          gallery.innerHTML = output;
-
           cb(i);
-
+          gallery.insertAdjacentHTML('beforeEnd', output);
         }
       };
-      
       xhr2[i].send();
-
       
     })(i);
 
@@ -222,14 +233,14 @@ function getType(type) {
 // ================================== ratingHandler() function ==================================
 var ratingHandler = function(i) {
 
-  meta = document.querySelectorAll('.meta');
-  metaRating = document.querySelectorAll('.meta-rating');
+  const meta = document.querySelectorAll('.meta');
+  const metaRating = document.querySelectorAll('.meta-rating');
 
-  rotten = document.querySelectorAll('.rotten');
-  rottenRating = document.querySelectorAll('.rotten-rating');
+  const rotten = document.querySelectorAll('.rotten');
+  const rottenRating = document.querySelectorAll('.rotten-rating');
 
-  imdb = document.querySelectorAll('.imdb');
-  imdbRating = document.querySelectorAll('.imdb-rating');
+  const imdb = document.querySelectorAll('.imdb');
+  const imdbRating = document.querySelectorAll('.imdb-rating');
 
   for(var j = 0; j < meta.length; j++){
   
@@ -360,7 +371,7 @@ function getMoreDetails(theId) {
   }
 
   xhr3.onerror = function(){
-    lightBox.InnerHTML = 'Request error...';
+    showError('Request error', 'form__error');
   }
 
   xhr3.send();
