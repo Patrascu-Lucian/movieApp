@@ -492,7 +492,7 @@ body {
   .form__warning {
     background-color: #fc3; }
 
-.lightbox {
+#lightbox {
   position: fixed;
   top: 0;
   left: 0;
@@ -500,6 +500,17 @@ body {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 100;
+  display: none;
+  justify-content: center;
+  align-items: center; }
+
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 200;
   display: flex;
   justify-content: center;
   align-items: center; }
@@ -581,10 +592,15 @@ body {
     .lightbox__details--right {
       padding-left: 1rem; }
 
-.spinner {
-  position: absolute;
+.spinner__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40vw;
+  height: 20rem; }
+
+.spinner__element {
   background-color: transparent;
-  position: relative;
   display: block;
   width: 7rem;
   height: 7rem;
@@ -595,7 +611,7 @@ body {
   border-bottom: 0.5rem solid #f7f7f7;
   border-right: 0.5rem solid #f7f7f7;
   animation: rotate 0.75s infinite cubic-bezier(1, 1, 1, 1); }
-  .spinner::before {
+  .spinner__element::before {
     content: "";
     position: absolute;
     background-color: transparent;
@@ -609,7 +625,7 @@ body {
     border-right: 0.5rem solid #f7f7f7;
     border-bottom: 0.5rem solid #f7f7f7;
     animation: rotate 1s infinite cubic-bezier(1, 1, 1, 1); }
-  .spinner::after {
+  .spinner__element::after {
     content: "";
     position: absolute;
     background-color: transparent;

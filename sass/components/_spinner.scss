@@ -1,56 +1,67 @@
-.spinner {
-  position: absolute;
-  background-color: transparent;
-  position: relative;
-  display: block;
-  width: 7rem;
-  height: 7rem;
+.spinner{
+  
+  &__container {
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 100%;
-
-  border-bottom: .5rem solid $light-grey-2;
-  border-right: .5rem solid $light-grey-2;
-
-  animation: rotate .75s infinite cubic-bezier(1,1,1,1);
-
-  &::before {
-    content: "";
-    position: absolute;
-    background-color: transparent;
-    display: block;
-    width: 4rem;
-    height: 4rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 100%;
-
-    border-right: .5rem solid $light-grey-2;
-    border-bottom: .5rem solid $light-grey-2;
-
-    animation: rotate 1s infinite cubic-bezier(1,1,1,1);
-
+  width: 40vw;
+  height: 20rem;
   }
 
-  &::after {
-    content: "";
-    position: absolute;
+  &__element {
     background-color: transparent;
     display: block;
-    width: 10rem;
-    height: 10rem;
+    width: 7rem;
+    height: 7rem;
+
     display: flex;
     align-items: center;
     justify-content: center;
 
     border-radius: 100%;
 
-    border-top: .5rem solid $light-grey-2;
+    border-bottom: .5rem solid $light-grey-2;
+    border-right: .5rem solid $light-grey-2;
 
-    animation: rotate .5s infinite cubic-bezier(1,1,1,1);
+    animation: rotate .75s infinite cubic-bezier(1,1,1,1);
+
+    &::before {
+      content: "";
+      position: absolute;
+      background-color: transparent;
+      display: block;
+      width: 4rem;
+      height: 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 100%;
+
+      border-right: .5rem solid $light-grey-2;
+      border-bottom: .5rem solid $light-grey-2;
+
+      animation: rotate 1s infinite cubic-bezier(1,1,1,1);
+
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      background-color: transparent;
+      display: block;
+      width: 10rem;
+      height: 10rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 100%;
+
+      border-top: .5rem solid $light-grey-2;
+
+      animation: rotate .5s infinite cubic-bezier(1,1,1,1);
+    }
   }
 }

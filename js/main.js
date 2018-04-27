@@ -5,19 +5,52 @@ const searchForm = document.getElementById('searchForm');
 const searchText = document.getElementById('searchText');
 const lightBox = document.getElementById('lightbox');
 const errorParagraph = document.getElementById('error-paragraph');
-const spinner = '<div class="spinner"></div>';
+const spinner = '<div class="spinner__container"><div class="spinner__element"></div></div>';
 
 // Create event listener
 searchForm.addEventListener('submit', function(e){
   e.preventDefault();
 
-    searchMovies(function(data){
+  searchMovies(function(data){
 
-   idHandler(data, ratingHandler);
+    idHandler(data, ratingHandler);
    
   });
 
 });
+
+// ================================== get Xml HTTP Response function =================================
+function getXhr(url, spinnerLocation, callback) {
+  // Create XHR Object
+  var xhr = new XMLHttpRequest();
+
+  // Show spinner
+  if(xhr.readyState < 4) {
+    spinnerLocation.insertAdjacentHTML('beforeEnd', spinner);
+  }
+
+  // function - open(TYPE, url/file, "boolean" async)
+  xhr.open('GET', url, true);
+
+  xhr.onload = function(){
+    if(this.status === 200){
+
+      spinnerLocation.querySelector('.spinner__container').remove();
+      callback(JSON.parse(xhr.responseText));
+
+    } else if(this.status === 404) {
+      showError('EROARE 404: NU S-AU GASIT FISIERELE!', 'form__error');
+    }
+  }
+
+  xhr.onerror = function(){
+    showError('Eroare cerere...', 'form__error');
+  }
+
+  // Sends request
+
+  xhr.send();
+}
 
 // ================================== searchMovies() function ==================================
 function searchMovies(callback){
@@ -26,54 +59,29 @@ function searchMovies(callback){
   var regex3 = /[A-Za-z0-9]{2,9}/;
 
   var input = searchText.value = searchText.value
-                                  .replace(regex1, ' ')
-                                  .replace(regex2, '')
-                                  .trim();
+    .replace(regex1, ' ')
+    .replace(regex2, '')
+    .trim();        
 
   if(input.length < 2) {
     showError('Trebuie sa introduci cel putin doua litere/cifre', 'form__warning');
   } else {
+
     // Reset gallery on every search
     gallery.innerHTML = '';
 
-    // Create XHR Object
-    var xhr = new XMLHttpRequest();
-
-    // function - open(TYPE, url/file, "boolean" async)
-    xhr.open('GET', 'https://www.omdbapi.com/?apikey=5df7d00a&s='+input, true);
-
-    if(xhr.readyState < 4) {
-      gallery.insertAdjacentHTML('beforeEnd', spinner);
-    }
-
-    xhr.onload = function(){
-      if(this.status === 200){
-
-        var data = JSON.parse(xhr.responseText);
-        if(data.Response === 'True') {
-          for(var i = 0; i < data.Search.length; i++) {
-            callback(data.Search[i].imdbID);
-          }
-
+    // GET XHR
+    getXhr('https://www.omdbapi.com/?apikey=5df7d00a&s='+input, gallery, function(data) {
+      if(data.Response === 'True') {
+        for(var i = 0; i < data.Search.length; i++) {
+          callback(data.Search[i].imdbID);
+        }
       } else {
-        gallery.querySelector('.spinner').remove();
         showError('Nume invalid!', 'form__warning');
       }
-
-      } else if(this.status === 404) {
-        showError('EROARE 404: NU S-AU GASIT FISIERELE!', 'form__error');
-      }
-    }
-
-    xhr.onerror = function(){
-      showError('Eroare cerere...', 'form__error');
-    }
-
-    // Sends request
-
-    xhr.send();
-  }
+    });
   
+  }
 } // END of searchMovies()
 
 // ================= Show error fucntion ================
@@ -90,20 +98,10 @@ function showError(message, className) {
 }
 
 // ================================== idHandler() function ==================================
-var idHandler = function(imdbData, callback) {
+var idHandler = function(id, callback) {
   var output = '';
 
-  var xhr = new XMLHttpRequest();
-
-  url = 'https://www.omdbapi.com/?apikey=5df7d00a&i='+imdbData;
-
-  xhr.open("GET", url, true);
-
-  xhr.onload = function(){
-
-    if (xhr.status === 200){
-
-    imdbData = JSON.parse(xhr.responseText);
+  getXhr('https://www.omdbapi.com/?apikey=5df7d00a&i='+id, gallery, function(imdbData){
 
     output = `
     <div class="card">
@@ -138,23 +136,16 @@ var idHandler = function(imdbData, callback) {
 
         <div class="card__back">
           <p>${imdbData.Plot}</p>
-          <button class="btn btn--yellow" onclick="getMoreDetails('${imdbData}')">Detalii++</button>
+          <button class="btn btn--yellow" onclick="getMoreDetails('${id}')">Detalii++</button>
         </div>
       </div>
     </div>
     `;
 
-    if(gallery.querySelector('.spinner')) {
-      gallery.querySelector('.spinner').remove();
-    }
-
     callback(imdbData);
     gallery.insertAdjacentHTML('beforeEnd', output);
 
-    }
-  }; 
-
-  xhr.send();
+  });
 } // END OF idHandler()
 
 // ================================== getCardPoster() function ==================================
@@ -282,88 +273,74 @@ var ratingHandler = function() {
 }
 
 // // ================================== getMoreDetails() function ==================================
-function getMoreDetails(theId) {
+function getMoreDetails(id) {
   var theResult = '';
-  
-  var xhr3;
 
-  xhr3 = new XMLHttpRequest();
+  lightBox.style.display = 'flex';
 
-  xhr3.open("GET", 'https://www.omdbapi.com/?apikey=5df7d00a&i='+theId, true);
+  getXhr('https://www.omdbapi.com/?apikey=5df7d00a&i='+id, lightBox, function(theMovie) {
 
-  xhr3.onload = function(){
-    if (xhr3.readyState === 4 && xhr3.status === 200){
-  
-      var theMovie = JSON.parse(xhr3.responseText);
-
-      theResult = `
-      <div class="lightbox">
-        <div class="lightbox__content">
-          <div class="lightbox__close-btn">&times;</div>
-            <div class="lightbox__left">
-              <div class="lightbox__img-container">
-                ${getLightBoxPoster(theMovie)}
-              </div>
+    theResult = `
+    <div class="lightbox">
+      <div class="lightbox__content">
+        <div class="lightbox__close-btn">&times;</div>
+          <div class="lightbox__left">
+            <div class="lightbox__img-container">
+              ${getLightBoxPoster(theMovie)}
             </div>
-            <div class="lightbox__right">
-    
-              <div class="lightbox__details">
+          </div>
+          <div class="lightbox__right">
+  
+            <div class="lightbox__details">
 
-                <div class="lightbox__details--left">
-                  <ul>
-                    <li>Titlu:</li>
-                    <li>An:</li>
-                    <li>Lansat:</li>
-                    <li>Durata:</li>
-                    <li>Bilete:</li>
-                    <li>Tara:</li>
-                    <li>DVD:</li>
-                    <li>Director:</li>
-                    <li>Limba:</li>
-                    <li>Productie:</li>
-                    <li>Scriitor:</li>
-                    <li>Vot IMDb:</li>
-                    <li>Premii:</li>
-                    <li>Actori:</li>
-                  </ul>
-                </div>
-
-                <div class="lightbox__details--right">
-                  <ul>
-                    <li>${theMovie.Title || 'indisponibil'}</li>
-                    <li>${theMovie.Year || 'indisponibil'}</li>
-                    <li>${theMovie.Released || 'indisponibil'}</li>
-                    <li>${theMovie.Runtime || 'indisponibil'}</li>
-                    <li>${theMovie.BoxOffice || 'indisponibil'}</li>
-                    <li>${theMovie.Country || 'indisponibil'}</li>
-                    <li>${theMovie.DVD || 'indisponibil'}</li>
-                    <li>${theMovie.Director || 'indisponibil'}</li>
-                    <li>${theMovie.Language || 'indisponibil'}</li>
-                    <li>${theMovie.Production || 'indisponibil'}</li>
-                    <li>${theMovie.Writer.split(',')[0] || 'indisponibil'}</li>
-                    <li>${theMovie.imdbVotes || 'indisponibil'}</li>
-                    <li>${theMovie.Awards || 'indisponibil'}</li>
-                    <li>${theMovie.Actors || 'indisponibil'}</li>
-                  </ul>
-                </div>
-
+              <div class="lightbox__details--left">
+                <ul>
+                  <li>Titlu:</li>
+                  <li>An:</li>
+                  <li>Lansat:</li>
+                  <li>Durata:</li>
+                  <li>Bilete:</li>
+                  <li>Tara:</li>
+                  <li>DVD:</li>
+                  <li>Director:</li>
+                  <li>Limba:</li>
+                  <li>Productie:</li>
+                  <li>Scriitor:</li>
+                  <li>Vot IMDb:</li>
+                  <li>Premii:</li>
+                  <li>Actori:</li>
+                </ul>
               </div>
 
-              <a href="https://imdb.com/title/${theMovie.imdbID}" target="_blank" class="btn btn--yellow">Vezi pe IMDB</a>
+              <div class="lightbox__details--right">
+                <ul>
+                  <li>${theMovie.Title || 'indisponibil'}</li>
+                  <li>${theMovie.Year || 'indisponibil'}</li>
+                  <li>${theMovie.Released || 'indisponibil'}</li>
+                  <li>${theMovie.Runtime || 'indisponibil'}</li>
+                  <li>${theMovie.BoxOffice || 'indisponibil'}</li>
+                  <li>${theMovie.Country || 'indisponibil'}</li>
+                  <li>${theMovie.DVD || 'indisponibil'}</li>
+                  <li>${theMovie.Director || 'indisponibil'}</li>
+                  <li>${theMovie.Language || 'indisponibil'}</li>
+                  <li>${theMovie.Production || 'indisponibil'}</li>
+                  <li>${theMovie.Writer.split(',')[0] || 'indisponibil'}</li>
+                  <li>${theMovie.imdbVotes || 'indisponibil'}</li>
+                  <li>${theMovie.Awards || 'indisponibil'}</li>
+                  <li>${theMovie.Actors || 'indisponibil'}</li>
+                </ul>
+              </div>
+
             </div>
+
+            <a href="https://imdb.com/title/${theMovie.imdbID}" target="_blank" class="btn btn--yellow">Vezi pe IMDB</a>
           </div>
         </div>
       </div>
-      `;
-      lightBox.innerHTML = theResult;
-    }
-  }
-
-  xhr3.onerror = function(){
-    showError('Eroare cerere....', 'form__error');
-  }
-
-  xhr3.send();
+    </div>
+    `;
+    lightBox.innerHTML = theResult;
+  });
 }
       
 // ================================== lightbox event listener ==================================
@@ -371,10 +348,14 @@ lightBox.addEventListener('click', function(e) {
   var self = this;
   var closeBtn = self.querySelector('.lightbox__close-btn');
 
+  console.log(this);
+
   if (e.target === self.firstElementChild || e.target === closeBtn) {
+    console.log(self.firstElementChild);;
 
     self.firstElementChild.firstElementChild.style.opacity = "0";
     setTimeout(function(){
+      lightBox.style.display = 'none';
       self.removeChild(self.firstElementChild);
     }, 200);
 
