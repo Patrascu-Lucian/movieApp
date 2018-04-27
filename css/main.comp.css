@@ -477,7 +477,7 @@ body {
   .form__error, .form__success, .form__warning {
     padding: .5rem 2rem;
     transition: all .2s;
-    margin: -3rem auto 1rem auto;
+    margin: 1rem auto;
     max-width: fit-content;
     border-radius: 3px;
     text-align: center;

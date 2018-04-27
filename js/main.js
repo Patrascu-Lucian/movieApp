@@ -11,11 +11,7 @@ const spinner = '<div class="spinner"></div>';
 searchForm.addEventListener('submit', function(e){
   e.preventDefault();
 
-    
-  // Reset gallery on every search
-  gallery.innerHTML = '';
-
-  searchMovies(function(data){
+    searchMovies(function(data){
 
    idHandler(data, ratingHandler);
    
@@ -37,6 +33,8 @@ function searchMovies(callback){
   if(input.length < 2) {
     showError('Trebuie sa introduci cel putin doua litere/cifre', 'form__warning');
   } else {
+    // Reset gallery on every search
+    gallery.innerHTML = '';
 
     // Create XHR Object
     var xhr = new XMLHttpRequest();
@@ -81,6 +79,7 @@ function searchMovies(callback){
 // ================= Show error fucntion ================
 
 function showError(message, className) {
+  errorParagraph.innerHTML = '';
   errorParagraph.className = className;
   errorParagraph.textContent = message;
 
