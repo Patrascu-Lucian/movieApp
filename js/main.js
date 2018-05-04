@@ -54,9 +54,8 @@ function getXhr(url, spinnerLocation, callback) {
 
 // ================================== searchMovies() function ==================================
 function searchMovies(callback){
-  var regex1 = /\s\s+/g;
-  var regex2 = /[^A-Za-z0-9\s]/g;
-  var regex3 = /[A-Za-z0-9]{2,9}/;
+  var regex1 = /\s\s+/gi;
+  var regex2 = /[^A-Za-z0-9\s]/gi;
 
   var input = searchText.value = searchText.value
     .replace(regex1, ' ')
